@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony package.
  *
@@ -86,7 +88,8 @@ final class Uuid
 
         $hash = md5(hex2bin(str_replace('-', '', $uuid_ns)).$name);
 
-        return sprintf('%08s-%04s-3%03s-%04x-%012s',
+        return sprintf(
+            '%08s-%04s-3%03s-%04x-%012s',
             // 32 bits for "time_low"
             substr($hash, 0, 8),
             // 16 bits for "time_mid"
@@ -127,7 +130,8 @@ final class Uuid
 
         $hash = sha1(hex2bin(str_replace('-', '', $uuid_ns)).$name);
 
-        return sprintf('%08s-%04s-5%03s-%04x-%012s',
+        return sprintf(
+            '%08s-%04s-5%03s-%04x-%012s',
             // 32 bits for "time_low"
             substr($hash, 0, 8),
             // 16 bits for "time_mid"
@@ -357,7 +361,8 @@ final class Uuid
     {
         $uuid = bin2hex(random_bytes(16));
 
-        return sprintf('%08s-%04s-4%03s-%04x-%012s',
+        return sprintf(
+            '%08s-%04s-4%03s-%04x-%012s',
             // 32 bits for "time_low"
             substr($uuid, 0, 8),
             // 16 bits for "time_mid"
@@ -401,21 +406,24 @@ final class Uuid
             if (\function_exists('apcu_fetch')) {
                 $node = apcu_fetch('__symfony_uuid_node');
                 if (false === $node) {
-                    $node = sprintf('%06x%06x',
+                    $node = sprintf(
+                        '%06x%06x',
                         random_int(0, 0xFFFFFF) | 0x010000,
                         random_int(0, 0xFFFFFF)
                     );
                     apcu_store('__symfony_uuid_node', $node);
                 }
             } else {
-                $node = sprintf('%06x%06x',
+                $node = sprintf(
+                    '%06x%06x',
                     random_int(0, 0xFFFFFF) | 0x010000,
                     random_int(0, 0xFFFFFF)
                 );
             }
         }
 
-        return sprintf('%08s-%04s-1%03s-%04x-%012s',
+        return sprintf(
+            '%08s-%04s-1%03s-%04x-%012s',
             // 32 bits for "time_low"
             substr($time, -8),
 
