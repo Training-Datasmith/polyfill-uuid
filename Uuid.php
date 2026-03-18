@@ -190,7 +190,7 @@ final class Uuid
         return strcasecmp($uuid1, $uuid2);
     }
 
-    public static function uuid_is_null($uuid)
+    public static function uuid_is_null($uuid): ?bool
     {
         if (!\is_string($uuid = self::toString($uuid))) {
             trigger_error(sprintf('uuid_is_null() expects parameter 1 to be string, %s given', \gettype($uuid)), \E_USER_WARNING);
@@ -353,7 +353,7 @@ final class Uuid
         return substr_replace($uuid, '-', 23, 0);
     }
 
-    private static function uuid_generate_random()
+    private static function uuid_generate_random(): string
     {
         $uuid = bin2hex(random_bytes(16));
 
@@ -378,7 +378,7 @@ final class Uuid
     /**
      * @see http://tools.ietf.org/html/rfc4122#section-4.2.2
      */
-    private static function uuid_generate_time()
+    private static function uuid_generate_time(): string
     {
         $time = microtime(false);
         $time = substr($time, 11).substr($time, 2, 7);
@@ -437,12 +437,12 @@ final class Uuid
         );
     }
 
-    private static function isValid($uuid)
+    private static function isValid(string $uuid): bool
     {
         return (bool) preg_match('{^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$}Di', $uuid);
     }
 
-    private static function parse($uuid)
+    private static function parse(string $uuid): ?array
     {
         if (!preg_match('{^(?<time_low>[0-9a-f]{8})-(?<time_mid>[0-9a-f]{4})-(?<version>[0-9a-f])(?<time_hi>[0-9a-f]{3})-(?<clock_seq>[0-9a-f]{4})-(?<node>[0-9a-f]{12})$}Di', $uuid, $matches)) {
             return null;
@@ -465,7 +465,7 @@ final class Uuid
         return $v;
     }
 
-    private static function toBinary($digits)
+    private static function toBinary(string $digits): string
     {
         $bytes = '';
         $count = \strlen($digits);
@@ -491,7 +491,7 @@ final class Uuid
         return $bytes;
     }
 
-    private static function toDecimal($bytes)
+    private static function toDecimal($bytes): string
     {
         $digits = '';
         $bytes = array_values(unpack('C*', $bytes));
@@ -517,7 +517,7 @@ final class Uuid
         return $digits;
     }
 
-    private static function binaryAdd($a, $b)
+    private static function binaryAdd(string $a, string $b): string
     {
         $sum = 0;
         for ($i = 7; 0 <= $i; --$i) {
